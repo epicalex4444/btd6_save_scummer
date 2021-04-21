@@ -2,7 +2,7 @@
 to use the save scummer download the correct file for your operating system, linux file should work on all unix based os's but it's untested  
 then you need to download the latest version of python if you haven't done that already  
 then you just run the python script this can easily be done on windows through powershell using the command py -3 save_scummer_windows.py  
-or on linux using through your terminal program using python3 save_scummer_linux.py
+or on linux using through your terminal program using python3 save_scummer_linux.py  
 note those commands will only work if you are in the correct directory  
 you can run it from a different directory though as the files are not dependent on the current working directory  
   
