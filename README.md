@@ -1,6 +1,6 @@
 # btd6_save_scummer
 ## warnings
-Due to how btd6 makes saves, you have to exit your game in btd6 before making a save otherwise the save may not be what you expect.
+Due to how btd6 makes saves, you have to exit your game in btd6 before making a save otherwise the save may not be what you expect.  
 Loading saves from different versions of btd6 can have undesired effects such as removing all trophy store items.
 ## installation
 1. Go to the releases section in github and download btd6_save_scummer.zip from the latest release
@@ -25,7 +25,7 @@ When you load a save it closes the game, copies the save you choose in the btd6 
 
 When you delete a save it just removes the save from the local save folder
 ## future development
-Nothing is set in stone but these are ideas I have to improve the program.
-Add hotkeys for save, load, quicksave and quickload.
-Either intergrate this into btd6 as a mod or turn it into an exe and so it can be ran just by clicking it.
+Nothing is set in stone but these are ideas I have to improve the program.  
+Add hotkeys for save, load, quicksave and quickload.  
+Either intergrate this into btd6 as a mod or turn it into an exe and so it can be ran just by clicking it.  
 improve the gui.
