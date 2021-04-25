@@ -101,6 +101,10 @@ class MainWindow(tk.Frame):
 
     #removes save from window and saves list
     def delete_save(self, saveName:str):
+        answer = messagebox.askyesno('Delete Save Conformation', 'Are you sure you want to delete {0}?'.format(saveName))
+        if answer == False:
+            return
+
         if not os.path.isfile(LOCAL_SAVE_DIR + saveName + '.Save'):
             raise SAVE_NOT_FOUND_ERROR
 
