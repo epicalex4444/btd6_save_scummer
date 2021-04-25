@@ -5,27 +5,26 @@ def init():
     global SETTINGS_FILE
     global BTD6_SAVE_DIR
     global BTD6_EXE
-    global HELP_MSG
+    global SAVE_HOTKEY
+    global LOAD_HOTKEY
+    global QUICKSAVE_HOTKEY
+    global QUICKLOAD_HOTKEY
 
     fileDir = get_directory()
     LOCAL_SAVE_DIR = fileDir + 'saves\\'
     SETTINGS_FILE = fileDir + 'settings.json'
     settings = read_settings()
+
     BTD6_SAVE_DIR = None
     BTD6_EXE = None
+    SAVE_HOTKEY = None
+    LOAD_HOTKEY = None
+    QUICKSAVE_HOTKEY = None
+    QUICKLOAD_HOTKEY = None
     if settings != None:
-        BTD6_SAVE_DIR = settings['BTD6_SAVE_DIR']
-        BTD6_EXE = settings['BTD6_EXE']
-    HELP_MSG = '''BTD6 Exe Directory is the location of the BloonsTD6.exe, it is generelly
-    C:\\Program Files (x86)\\Steam\\steamapps\\common\\BloonsTD6\\.
-    You can get to this address through steam by browsing local files.
-
-    BTD6 Save Directory is the location that BTD6 puts save data there will be a file
-    called Profile.Save in the directory. Generelly you should go to
-    C:\\Program Files (x86)\\Steam\\userdata\\, from there the number after userdata
-    indicates which steam account, you can find your steam id at
-    https://steamidfinder.com/. The number after that indicates the game, 
-    btd6 is 960090, after that the folders should be linear leading to Profile.Save.
-
-    once you have found these folder you can right click the address at the 
-    top of file explorer and copy as text and paste in into the input boxes.'''
+        BTD6_SAVE_DIR = settings.get('BTD6_SAVE_DIR', None)
+        BTD6_EXE = settings.get('BTD6_EXE', None)
+        SAVE_HOTKEY = settings.get('SAVE_HOTKEY', None)
+        LOAD_HOTKEY = settings.get('LOAD_HOTKEY', None)
+        QUICKSAVE_HOTKEY = settings.get('QUICKSAVE_HOTKEY', None)
+        QUICKLOAD_HOTKEY = settings.get('QUICKLOAD_HOTKEY', None)

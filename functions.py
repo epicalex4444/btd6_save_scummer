@@ -10,8 +10,8 @@ def list_save_names():
     check_save_folder()
     saveNames = []
     files = os.listdir(globals.LOCAL_SAVE_DIR)
-    for file in files:
-        if file.endswith('.Save'):
+    for fileName in files:
+        if fileName.endswith('.Save') and fileName != 'quicksave.Save':
             saveNames.append(file[:-5])
     return saveNames
 
@@ -35,7 +35,11 @@ def open_btd6():
 def export_setings():
     settings = {
         'BTD6_SAVE_DIR': globals.BTD6_SAVE_DIR,
-        'BTD6_EXE': globals.BTD6_EXE
+        'BTD6_EXE': globals.BTD6_EXE,
+        'SAVE_HOTKEY': globals.SAVE_HOTKEY,
+        'LOAD_HOTKEY': globals.LOAD_HOTKEY,
+        'QUICKSAVE_HOTKEY': globals.QUICKSAVE_HOTKEY,
+        'QUICKLOAD_HOTKEY': globals.QUICKLOAD_HOTKEY
     }
 
     try:
@@ -50,7 +54,7 @@ def create_save(saveName:str):
     check_save_folder()
     if globals.BTD6_SAVE_DIR == None:
         raise InvalidSettingsError
-    if os.path.isfile(globals.LOCAL_SAVE_DIR + saveName + '.Save'):
+    if os.path.isfile(globals.LOCAL_SAVE_DIR + saveName + '.Save') and saveName != 'quicksave':
         raise SaveExistsError
     
     src = globals.BTD6_SAVE_DIR + 'Profile.Save'
