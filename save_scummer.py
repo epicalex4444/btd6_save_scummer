@@ -14,6 +14,17 @@ class Root(tk.Tk):
     def report_callback_exception(self, exc, val, tb):
         messagebox.showerror('Error', str(val))
 
+#custom exceptions
+class SaveNotFoundError(Exception):
+    def __init__(self, message="save doesn't exist"):
+        self.message = message
+        super().__init__(self.message)
+
+class SaveExistsError(Exception):
+    def __init__(self, message="save already exists"):
+        self.message = message
+        super().__init__(self.message)
+
 #contains properties for a save
 class Save():
     def __init__(self, name:str, label:tk.Label, loadButton:tk.Button, deleteButton:tk.Button):
@@ -85,7 +96,7 @@ class MainWindow(tk.Frame):
         saveName = self.inputText.get('1.0', 'end-1c')
 
         if os.path.isfile(LOCAL_SAVE_DIR + saveName + '.Save'):
-            raise SAVE_EXISTS_ERROR
+            raise SaveExistsError
     
         #copy Profile.Save to LOCAL_SAVE_DIR
         src = BTD6_SAVE_DIR + BTD6_SAVE_NAME
@@ -106,7 +117,8 @@ class MainWindow(tk.Frame):
             return
 
         if not os.path.isfile(LOCAL_SAVE_DIR + saveName + '.Save'):
-            raise SAVE_NOT_FOUND_ERROR
+            self.remove_save(saveName) #removes faulty save entry
+            raise SaveNotFoundError
 
         os.remove(LOCAL_SAVE_DIR + saveName + '.Save')
         self.remove_save(saveName)
@@ -118,7 +130,8 @@ class MainWindow(tk.Frame):
             return
 
         if not os.path.isfile(LOCAL_SAVE_DIR + saveName + '.Save'):
-            raise SAVE_NOT_FOUND_ERROR
+            self.remove_save(saveName) #removes faulty save entry
+            raise SaveNotFoundError
 
         #btd6 has to be opened and closed to load a save
         close_btd6()
@@ -253,8 +266,6 @@ if __name__ == "__main__":
 
     once you have found these folder you can right click the address at the 
     top of file explorer and copy as text and paste in into the input boxes'''
-    SAVE_NOT_FOUND_ERROR = Exception("save doesn't exist")
-    SAVE_EXISTS_ERROR = Exception("save already exists")
 
     if not os.path.isdir(LOCAL_SAVE_DIR):
         os.mkdir(LOCAL_SAVE_DIR)
