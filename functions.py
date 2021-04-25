@@ -7,6 +7,7 @@ import globals
 from exceptions import SaveNotFoundError, SaveExistsError, InvalidSettingsError
 
 def list_save_names():
+    check_save_folder()
     saveNames = []
     files = os.listdir(globals.LOCAL_SAVE_DIR)
     for file in files:
@@ -46,6 +47,7 @@ def export_setings():
         file.close()
 
 def create_save(saveName:str):
+    check_save_folder()
     if globals.BTD6_SAVE_DIR == None:
         raise InvalidSettingsError
     if os.path.isfile(globals.LOCAL_SAVE_DIR + saveName + '.Save'):
@@ -60,11 +62,13 @@ def create_save(saveName:str):
     shutil.move(src, dst)
 
 def delete_save(saveName:str):
+    check_save_folder()
     if not os.path.isfile(globals.LOCAL_SAVE_DIR + saveName + '.Save'):
         raise SaveNotFoundError
     os.remove(globals.LOCAL_SAVE_DIR + saveName + '.Save')
 
 def load_save(saveName:str):
+    check_save_folder()
     if globals.BTD6_SAVE_DIR == None or globals.BTD6_EXE == None:
         raise InvalidSettingsError
     if not os.path.isfile(globals.LOCAL_SAVE_DIR + saveName + '.Save'):
@@ -94,3 +98,8 @@ def read_settings():
 #gets the btd6_save_scummer directory, assumes this file is in that directory
 def get_directory():
     return os.path.dirname(os.path.realpath(__file__)) + '\\'
+
+#makes save folder if it doesn't exist
+def check_save_folder():
+    if not os.path.isdir(globals.LOCAL_SAVE_DIR):
+        os.mkdir(globals.LOCAL_SAVE_DIR)
