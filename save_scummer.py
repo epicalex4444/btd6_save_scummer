@@ -5,7 +5,6 @@ import subprocess
 import tkinter as tk
 from tkinter import messagebox
 import json
-import time
 
 #root class used to override the default error handling of tkinter
 class Root(tk.Tk):
@@ -204,7 +203,13 @@ def close_btd6():
     for process in psutil.process_iter():
         if process.name() == 'BloonsTD6.exe':
             os.kill(process.pid, 9)
-    time.sleep(0.2) #wait 200ms for program to close
+
+    btd6Open = True
+    while btd6Open:
+        btd6Open = False
+        for process in psutil.process_iter():
+            if process.name() == 'BloonsTD6.exe':
+                btd6Open = True
 
 #opens an instance of BloonsTD6.exe
 def open_btd6():
