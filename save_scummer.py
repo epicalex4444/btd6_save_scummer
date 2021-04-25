@@ -265,10 +265,10 @@ if __name__ == "__main__":
     C:\\Program Files (x86)\\Steam\\userdata\\, from there the number after userdata
     indicates which steam account, you can find your steam id at
     https://steamidfinder.com/. The number after that indicates the game, 
-    btd6 is 960090, after that the folders should be linear leading to Profile.Save
+    btd6 is 960090, after that the folders should be linear leading to Profile.Save.
 
     once you have found these folder you can right click the address at the 
-    top of file explorer and copy as text and paste in into the input boxes'''
+    top of file explorer and copy as text and paste in into the input boxes.'''
 
     if not os.path.isdir(LOCAL_SAVE_DIR):
         os.mkdir(LOCAL_SAVE_DIR)
