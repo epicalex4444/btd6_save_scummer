@@ -25,6 +25,11 @@ class SaveExistsError(Exception):
         self.message = message
         super().__init__(self.message)
 
+class InvalidSettingsError(Exception):
+    def __init__(self, message='BTD6 Save Directory or BTD6 Exe Directory are not set'):
+        self.message = message
+        super().__init__(self.message)
+
 #contains properties for a save
 class Save():
     def __init__(self, name:str, label:tk.Label, loadButton:tk.Button, deleteButton:tk.Button):
@@ -90,8 +95,7 @@ class MainWindow(tk.Frame):
     #adds new save to the window and in the saves list, gets name from input box
     def create_save(self):
         if BTD6_SAVE_DIR == None:
-            tk.messagebox.showerror('Invalid Settings Error', 'BTD6 Save Directory is not set, you need to go to settings and set that before using the save function')
-            return
+            raise InvalidSettingsError
 
         saveName = self.inputText.get('1.0', 'end-1c')
 
@@ -126,8 +130,7 @@ class MainWindow(tk.Frame):
     #reopens btd6 with the chosen save
     def load_save(self, saveName:str):
         if BTD6_SAVE_DIR == None or BTD6_EXE == None:
-            tk.messagebox.showerror('Invalid Settings Error', 'BTD6 Save Directory or BTD6 Exe Directory are not set, you need to go to settings and set those before using the load function')
-            return
+            raise InvalidSettingsError
 
         if not os.path.isfile(LOCAL_SAVE_DIR + saveName + '.Save'):
             self.remove_save(saveName) #removes faulty save entry
@@ -253,16 +256,16 @@ if __name__ == "__main__":
     FILE_DIR = os.path.dirname(os.path.realpath(__file__)) + '\\'
     LOCAL_SAVE_DIR = FILE_DIR + 'saves\\'
     SETTINGS_FILE = FILE_DIR + 'settings.json'
-    SETTING_HELP_MSG = '''BTD6 Exe Directory is the location of the BloonsTD6.exe it is generelly
-    "C:\\Program Files (x86)\\Steam\\steamapps\\common\\BloonsTD6\\"
-    you can also get there through steam by browsing local files
+    SETTING_HELP_MSG = '''BTD6 Exe Directory is the location of the BloonsTD6.exe, it is generelly
+    C:\\Program Files (x86)\\Steam\\steamapps\\common\\BloonsTD6\\.
+    You can get to this address through steam by browsing local files.
 
     BTD6 Save Directory is the location that BTD6 puts save data there will be a file
-    called Profile.Save there which is the file that contains the save information
-    generelly you should go to "C:\\Program Files (x86)\\Steam\\userdata\\"
-    from thier the number after userdata indicates which steam account,
-    the number after that indicates the game BTD6 and will always be 960090
-    after that the folders should be linear leading to Profile.Save
+    called Profile.Save in the directory. Generelly you should go to
+    C:\\Program Files (x86)\\Steam\\userdata\\, from there the number after userdata
+    indicates which steam account, you can find your steam id at
+    https://steamidfinder.com/. The number after that indicates the game, 
+    btd6 is 960090, after that the folders should be linear leading to Profile.Save
 
     once you have found these folder you can right click the address at the 
     top of file explorer and copy as text and paste in into the input boxes'''
