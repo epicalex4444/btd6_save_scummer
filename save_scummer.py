@@ -11,10 +11,7 @@ def main():
     globals.init()
 
     root = Root()
-    root.wm_title("BloonsTD6 Save Scummer")
-    root.geometry("341x312")
     mainWindow = MainWindow(root)
-    raise_above_all(root)
 
     if any_hotkeys_set():
         start_hotkey_listener(mainWindow)

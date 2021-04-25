@@ -29,6 +29,8 @@ class MainWindow(tk.Frame):
     def __init__(self, root):
         super().__init__(root)
         self.root = root
+        self.root.title("BloonsTD6 Save Scummer")
+        self.root.geometry("341x312")
         self.pack(fill=tk.BOTH, expand=1)
         self.column0Width = 30
         self.column1Width = 4
@@ -41,6 +43,7 @@ class MainWindow(tk.Frame):
         settingsButton.grid(row=0, column=2)
         self.saves = []
         self.init_saves()
+        raise_above_all(self.root)
         if globals.BTD6_SAVE_DIR == None or globals.BTD6_EXE == None:
             tk.messagebox.showwarning('Missing Settings', 'BTD6 Save Directory or BTD6 Exe Directory are not set, you need to go to settings and set them to use this program')
 
