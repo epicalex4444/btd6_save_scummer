@@ -2,7 +2,7 @@
 ## Warnings
 Due to how btd6 makes saves, you have to exit your game in btd6 before making a save otherwise the save may not be what you expect.  
 Loading saves from different versions of btd6 can have undesired effects such as removing all trophy store items.  
-You can get hackerpooled loading saves from different btd6 accounts.
+You can get hacker pooled loading saves from different btd6 accounts.
 ## Installation
 1. Go to the releases section in github and download btd6_save_scummer.zip from the latest release
 2. Extract the downloaded file and move it to a desired location
