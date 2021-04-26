@@ -2,11 +2,6 @@ import globals
 from hotkeys import start_hotkey_listener, any_hotkeys_set
 from gui import Root, MainWindow
 
-#TODO
-#using quickload hotkey completely breaks the hotkeys
-#raise_above_all should select the window
-#change hotkeys to be set by keyboard presses
-
 def main():
     globals.init()
 
