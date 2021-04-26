@@ -1,6 +1,6 @@
 import globals
 from hotkeys import start_hotkey_listener, any_hotkeys_set
-from gui import Root, MainWindow, raise_above_all
+from gui import Root, MainWindow
 
 #TODO
 #using quickload hotkey completely breaks the hotkeys

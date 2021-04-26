@@ -103,7 +103,7 @@ def read_settings():
 def get_directory():
     return os.path.dirname(os.path.realpath(__file__)) + '\\'
 
-#makes save folder if it doesn't exist
+#makes save folder if it doesn't exist make one
 def check_save_folder():
     if not os.path.isdir(globals.LOCAL_SAVE_DIR):
         os.mkdir(globals.LOCAL_SAVE_DIR)
