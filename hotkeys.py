@@ -66,9 +66,6 @@ class SmartHotkeyListener(pynput.keyboard.Listener):
 
     def stop(self):
         self.queue.put_nowait(self.sigStop)
-        for _ in range(self.queue.qsize()):
-            self.queue.task_done()
-        self.queue.join()
         self.executor.join()
         super().stop()
 
