@@ -32,6 +32,7 @@ class MainWindow(tk.Frame):
         self.root.title("BloonsTD6 Save Scummer")
         self.root.geometry("341x312")
         self.pack(fill=tk.BOTH, expand=1)
+        self.root.protocol("WM_DELETE_WINDOW", self.on_close)
         self.column0Width = 30
         self.column1Width = 4
         self.column2Width = 7
@@ -108,6 +109,10 @@ class MainWindow(tk.Frame):
 
     def load_hotkey(self):
         LoadWindow(self)
+
+    def on_close(self):
+        globals.LISTENER.stop()
+        self.root.destroy()
 
 class SettingsWindow(tk.Toplevel):
     def __init__(self, mainWindow):

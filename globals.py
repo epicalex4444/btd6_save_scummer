@@ -9,12 +9,13 @@ def init():
     global LOAD_HOTKEY
     global QUICKSAVE_HOTKEY
     global QUICKLOAD_HOTKEY
+    global LISTENER
 
+    LISTENER = None
     fileDir = get_directory()
     LOCAL_SAVE_DIR = fileDir + 'saves\\'
     SETTINGS_FILE = fileDir + 'settings.json'
     settings = read_settings()
-
     BTD6_SAVE_DIR = None
     BTD6_EXE = None
     SAVE_HOTKEY = None
