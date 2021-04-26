@@ -111,7 +111,8 @@ class MainWindow(tk.Frame):
         LoadWindow(self)
 
     def on_close(self):
-        globals.LISTENER.stop()
+        if globals.LISTENER != None:
+            globals.LISTENER.stop()
         self.root.destroy()
 
 class SettingsWindow(tk.Toplevel):
