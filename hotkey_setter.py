@@ -32,7 +32,7 @@ def get_new_hotkey():
 #couldn't find any library to do this shit for me
 #many buttons are missing but it's unlikely people will use those buttons anyway
 def hotkey_to_string(hotkey):
-    if hotkey == []:
+    if hotkey == ():
         return 'Hotkey Not Set'
 
     vk_names = [
