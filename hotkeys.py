@@ -26,14 +26,13 @@ class SmartHotkeyListener(pynput.keyboard.Listener):
         self.hotkeys = [pynput.keyboard.HotKey.parse(hotkey) for hotkey in hotkeys]
         self.functions = [hotkeys[hotkey] for hotkey in hotkeys]
         self.currentKeys = set()
-        self.queue = queue.PriorityQueue()
-        self.sigStop = (0, -1) #breaks executors while loop when added to the queue
-        self.executor = threading.Thread(target=lambda: self.executor_callback(self.functions))
-        self.executor.start()
+        self.executeThread = None
+        self.lock = threading.Lock()
         self.start()
 
     #if hotkeys share a same key there will be a priority in which one is activated in this system
     #as only one hotkey can be activated from a button press, hotkeys are also considered unordered
+    #using a hotkey when one is still being active will cause it not to activate
     def on_press(self, key):
         key = self.canonical(key)
         self.currentKeys.add(key)
@@ -41,7 +40,10 @@ class SmartHotkeyListener(pynput.keyboard.Listener):
             if not key in hotkey:
                 continue
             if self.hotkey_active(hotkey):
-                self.queue.put_nowait((10, i))
+                if not self.lock.locked():
+                    self.close_thread() #if the lock has been released we know the thread is ready to exit
+                    self.executeThread = threading.Thread(target=self.functions[i])
+                    self.executeThread.start()
                 return
 
     def on_release(self, key):
@@ -54,19 +56,18 @@ class SmartHotkeyListener(pynput.keyboard.Listener):
                 hotkeyActive = False
         return hotkeyActive
 
-    def executor_callback(self, functions:tuple):
-        while True:
-            if self.queue.empty():
-                continue
-            msg = self.queue.get_nowait()
-            if msg[1] == -1:
-                return
-            functions[msg[1]]()
-            self.queue.task_done()
+    def execute_function(self, function):
+        self.lock.aquire()
+        function()
+        self.lock.release()
+
+    #this operation involves waiting for a thread to finish, which can be slow
+    def close_thread(self):
+        if self.executeThread != None:
+            self.executeThread.join()
 
     def stop(self):
-        self.queue.put_nowait(self.sigStop)
-        self.executor.join()
+        self.close_thread()
         super().stop()
 
 #starts/restarts hotkey handling
