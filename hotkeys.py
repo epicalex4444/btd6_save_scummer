@@ -40,8 +40,9 @@ def get_vk(key):
 
 #automatically starts in a non blocking way and handles hotkey calls in a non blocking way
 class SmartHotkeyListener(pynput.keyboard.Listener):
-    def __init__(self, hotkeys:dict):
+    def __init__(self, hotkeys:dict, mainWindow):
         super().__init__(on_press=self.on_press, on_release=self.on_release)
+        self.mainWindow = mainWindow
         self.hotkeys = [hotkey for hotkey in hotkeys]
         self.functions = [hotkeys[hotkey] for hotkey in hotkeys]
         self.currentKeys = set()
@@ -59,10 +60,7 @@ class SmartHotkeyListener(pynput.keyboard.Listener):
             if not key in hotkey:
                 continue
             if self.hotkey_active(hotkey):
-                if not self.lock.locked():
-                    self.close_thread() #if the lock has been released we know the thread is ready to exit
-                    self.executeThread = threading.Thread(target=self.execute_function(self.functions[i]))
-                    self.executeThread.start()
+                self.execute_function(self.functions[i], self.mainWindow)
                 return
 
     def on_release(self, key):
@@ -77,10 +75,20 @@ class SmartHotkeyListener(pynput.keyboard.Listener):
                 hotkeyActive = False
         return hotkeyActive
 
-    def execute_function(self, function):
-        self.lock.acquire()
-        function()
-        self.lock.release()
+    def execute_function(self, function, mainWindow):
+        if not self.lock.locked():
+            self.close_thread() #if the lock has been released we know the thread is ready to exit
+            self.executeThread = threading.Thread(target=lambda: self.execute_callback(function, mainWindow))
+            self.executeThread.start()
+
+    def execute_callback(self, function, mainWindow):
+        try:
+            self.lock.acquire()
+            function()
+        except Exception as e:
+            mainWindow.raise_excpetion(e)
+        finally:
+            self.lock.release()
 
     #this operation involves waiting for a thread to finish, which can be slow
     def close_thread(self):
@@ -98,4 +106,4 @@ def stop_hotkey_listener():
 
 def start_hotkey_listener(mainWindow):
     global listener
-    listener = SmartHotkeyListener(get_hotkeys(mainWindow))
+    listener = SmartHotkeyListener(get_hotkeys(mainWindow), mainWindow)

@@ -115,6 +115,10 @@ class MainWindow(tk.Frame):
         stop_hotkey_listener()
         self.root.destroy()
 
+    #called by other threads so exceptions can be raised in a gui
+    def raise_excpetion(self, exception):
+        messagebox.showerror('Error', str(exception))
+
 class SettingsWindow(tk.Toplevel):
     def __init__(self, mainWindow):
         super().__init__(mainWindow.root)
