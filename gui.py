@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import globals
-from functions import list_save_names, create_save, delete_save, load_save, export_setings
+from functions import list_save_names, create_save, delete_save, load_save, export_setings, btd6_exe_valid, btd6_save_dir_valid
 from exceptions import SaveNotFoundError
 from hotkeys import start_hotkey_listener, stop_hotkey_listener
 from hotkey_setter import get_new_hotkey, hotkey_to_string
@@ -47,7 +47,7 @@ class MainWindow(tk.Frame):
         self.init_saves()
         raise_above_all(self.root)
         if globals.BTD6_SAVE_DIR == None or globals.BTD6_EXE == None:
-            tk.messagebox.showwarning('Missing Settings', 'BTD6 Save Directory or BTD6 Exe Directory are not set, you need to go to settings and set them to use this program')
+            messagebox.showwarning('Missing Settings', 'BTD6 Save Directory or BTD6 Exe Directory are not set, you need to go to settings and set them to use this program')
 
     #adds all existing saves
     def init_saves(self):
@@ -171,6 +171,9 @@ class SettingsWindow(tk.Toplevel):
         if not textInput.endswith('\\'):
             textInput += '\\'
         globals.BTD6_EXE = textInput + 'BloonsTD6.exe'
+        if not btd6_exe_valid():
+            messagebox.showwarning('Incorrect Btd6 Exe Directory Warning', 'The directory you entered for the btd6 exe directory is incorrect, visit the github for help on finding the directory')
+            return
         export_setings()
 
     def set_btd6_save_dir_button(self):
@@ -179,6 +182,9 @@ class SettingsWindow(tk.Toplevel):
         if not textInput.endswith('\\'):
             textInput += '\\'
         globals.BTD6_SAVE_DIR = textInput
+        if not btd6_save_dir_valid():
+            messagebox.showwarning('Incorrect Btd6 Exe Directory Warning', 'The directory you entered for the btd6 save directory is incorrect, visit the github for help on finding the directory')
+            return
         export_setings()
 
     def set_save_hotkey_button(self):

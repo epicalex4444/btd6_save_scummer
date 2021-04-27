@@ -4,10 +4,10 @@ import psutil
 import subprocess
 import json
 import globals
-from exceptions import SaveNotFoundError, SaveExistsError, InvalidSettingsError
+from exceptions import *
 
 def list_save_names():
-    check_save_folder()
+    check_local_save_folder()
     saveNames = []
     files = os.listdir(globals.LOCAL_SAVE_DIR)
     for fileName in files:
@@ -30,6 +30,8 @@ def close_btd6():
                 btd6Open = True
 
 def open_btd6():
+    if not btd6_exe_valid():
+        raise IncorrectBtd6ExeDir
     subprocess.Popen(args=[], executable=globals.BTD6_EXE)
 
 def export_setings():
@@ -51,7 +53,9 @@ def export_setings():
         file.close()
 
 def create_save(saveName:str):
-    check_save_folder()
+    if not btd6_save_dir_valid():
+        raise IncorrectBtd6SaveDir
+    check_local_save_folder()
     if globals.BTD6_SAVE_DIR == None:
         raise InvalidSettingsError
     if os.path.isfile(globals.LOCAL_SAVE_DIR + saveName + '.Save') and saveName != 'quicksave':
@@ -72,7 +76,9 @@ def delete_save(saveName:str):
     os.remove(globals.LOCAL_SAVE_DIR + saveName + '.Save')
 
 def load_save(saveName:str):
-    check_save_folder()
+    if not btd6_save_dir_valid():
+        raise IncorrectBtd6SaveDir
+    check_local_save_folder()
     if globals.BTD6_SAVE_DIR == None or globals.BTD6_EXE == None:
         raise InvalidSettingsError
     if not os.path.isfile(globals.LOCAL_SAVE_DIR + saveName + '.Save'):
@@ -104,6 +110,16 @@ def get_directory():
     return os.path.dirname(os.path.realpath(__file__)) + '\\'
 
 #makes save folder if it doesn't exist make one
-def check_save_folder():
+def check_local_save_folder():
     if not os.path.isdir(globals.LOCAL_SAVE_DIR):
         os.mkdir(globals.LOCAL_SAVE_DIR)
+
+def btd6_exe_valid():
+    if not os.path.isfile(globals.BTD6_EXE):
+        return False
+    if not globals.BTD6_EXE.endswith('\\BloonsTD6.exe'):
+        return False
+
+def btd6_save_dir_valid():
+    if not os.path.isfile(globals.BTD6_SAVE_DIR + 'Profile.Save'):
+        return False
