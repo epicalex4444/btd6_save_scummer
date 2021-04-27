@@ -18,6 +18,12 @@ def get_hotkeys(mainWindow):
         hotkeys[globals.QUICKLOAD_HOTKEY] = lambda: load_save('quicksave')
     return hotkeys
 
+def get_vk(key):
+    if hasattr(key, 'vk'):
+        return key.vk
+    else:
+        return key.value.vk
+
 #automatically starts in a non blocking way and handles hotkey calls in a non blocking way
 class SmartHotkeyListener(pynput.keyboard.Listener):
     def __init__(self, hotkeys:dict):
@@ -33,7 +39,7 @@ class SmartHotkeyListener(pynput.keyboard.Listener):
     #as only one hotkey can be activated from a button press, hotkeys are also considered unordered
     #using a hotkey when one is still being active will cause it not to activate
     def on_press(self, key):
-        key = self.canonical(key)
+        key = get_vk(key)
         self.currentKeys.add(key)
         for i, hotkey in enumerate(self.hotkeys):
             if not key in hotkey:
@@ -46,7 +52,7 @@ class SmartHotkeyListener(pynput.keyboard.Listener):
                 return
 
     def on_release(self, key):
-        key = self.canonical(key)
+        key = get_vk(key)
         if key in self.currentKeys:
             self.currentKeys.remove(key)
 
