@@ -115,7 +115,13 @@ def check_local_save_folder():
         os.mkdir(globals.LOCAL_SAVE_DIR)
 
 def btd6_exe_valid():
-    return os.path.isfile(globals.BTD6_EXE) and globals.BTD6_EXE.endswith('\\BloonsTD6.exe')
+    try:
+        return os.path.isfile(globals.BTD6_EXE) and globals.BTD6_EXE.endswith('\\BloonsTD6.exe')
+    except:
+        return False
 
 def btd6_save_dir_valid():
-    return os.path.isfile(globals.BTD6_SAVE_DIR + 'Profile.Save')
+    try:
+        return os.path.isfile(globals.BTD6_SAVE_DIR + 'Profile.Save')
+    except:
+        return False
