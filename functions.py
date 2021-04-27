@@ -12,7 +12,7 @@ def list_save_names():
     files = os.listdir(globals.LOCAL_SAVE_DIR)
     for fileName in files:
         if fileName.endswith('.Save') and fileName != 'quicksave.Save':
-            saveNames.append(file[:-5])
+            saveNames.append(fileName[:-5])
     return saveNames
 
 def close_btd6():
