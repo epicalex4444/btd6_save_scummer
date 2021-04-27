@@ -27,12 +27,3 @@ def init():
         LOAD_HOTKEY = settings.get('LOAD_HOTKEY', ())
         QUICKSAVE_HOTKEY = settings.get('QUICKSAVE_HOTKEY', ())
         QUICKLOAD_HOTKEY = settings.get('QUICKLOAD_HOTKEY', ())
-
-    if SAVE_HOTKEY != ():
-        SAVE_HOTKEY = tuple(SAVE_HOTKEY)
-    if LOAD_HOTKEY != ():
-        LOAD_HOTKEY = tuple(LOAD_HOTKEY)
-    if QUICKSAVE_HOTKEY != ():
-        QUICKSAVE_HOTKEY = tuple(QUICKSAVE_HOTKEY)
-    if QUICKLOAD_HOTKEY != ():
-        QUICKLOAD_HOTKEY = tuple(QUICKLOAD_HOTKEY)
