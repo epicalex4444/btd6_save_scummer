@@ -17,6 +17,8 @@ Once you have ran the save_scummer.py file you will get the main window and a wa
 Once you have inputted these addresses into the corresponing text box and clicked the set button, assuming these addresses are correct you can start creating and loading saves. If for whatever reason the location of the btd6 exe or save moves you will have to set the new addresses in the settings.
 
 To make a save you write the saves name into the text box in the main window then you click the save button. To load or delete a save you find the save you want in the main window then click the load or delete button directly to the right of it.
+
+You can also set hotkeys in settings to quickly perform save/load these hotkeys will bring up a small menu just for these task. You can also set quicksave and quickload hotkeys which store one save at a time, this save will get overwriten by the next quicksave and is only accessible by the quickload hotkey.
 ## How It Works
 This program works the same way as one device save scumming has been done for ages, it just does it all automatically for you.
 
@@ -26,7 +28,6 @@ When you load a save it closes the game, copies the save you choose in the btd6 
 
 When you delete a save it just removes the save from the local save folder
 ## Future Development
-Nothing is set in stone but these are ideas I have to improve the program.  
-Add hotkeys for save, load, quicksave and quickload.  
+Nothing is set in stone but these are ideas I have to improve the program.    
 Either intergrate this into btd6 as a mod or turn it into an exe and so it can be ran just by clicking it.  
 improve the gui.
