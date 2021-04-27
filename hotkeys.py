@@ -2,7 +2,6 @@ import pynput
 import globals
 from functions import create_save, load_save
 import threading
-import queue
 
 def any_hotkeys_set():
     return not (globals.SAVE_HOTKEY == None and globals.LOAD_HOTKEY == None and globals.QUICKSAVE_HOTKEY == None and globals.QUICKLOAD_HOTKEY == None)
