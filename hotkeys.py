@@ -3,18 +3,20 @@ import globals
 from functions import create_save, load_save
 import threading
 
+listener = None
+
 def any_hotkeys_set():
-    return not (globals.SAVE_HOTKEY == None and globals.LOAD_HOTKEY == None and globals.QUICKSAVE_HOTKEY == None and globals.QUICKLOAD_HOTKEY == None)
+    return not (globals.SAVE_HOTKEY == () and globals.LOAD_HOTKEY == () and globals.QUICKSAVE_HOTKEY == () and globals.QUICKLOAD_HOTKEY == ())
 
 def get_hotkeys(mainWindow):
     hotkeys = dict()
-    if globals.SAVE_HOTKEY != None:
+    if globals.SAVE_HOTKEY != ():
         hotkeys[globals.SAVE_HOTKEY] = mainWindow.save_hotkey
-    if globals.LOAD_HOTKEY != None:
+    if globals.LOAD_HOTKEY != ():
         hotkeys[globals.LOAD_HOTKEY] = mainWindow.load_hotkey
-    if globals.QUICKSAVE_HOTKEY != None:
+    if globals.QUICKSAVE_HOTKEY != ():
         hotkeys[globals.QUICKSAVE_HOTKEY] = lambda: create_save('quicksave')
-    if globals.QUICKLOAD_HOTKEY != None:
+    if globals.QUICKLOAD_HOTKEY != ():
         hotkeys[globals.QUICKLOAD_HOTKEY] = lambda: load_save('quicksave')
     return hotkeys
 
@@ -77,8 +79,11 @@ class SmartHotkeyListener(pynput.keyboard.Listener):
         self.close_thread()
         super().stop()
 
-#starts/restarts hotkey handling
+def stop_hotkey_listener():
+    global listener
+    if listener != None:
+        listener.stop()
+
 def start_hotkey_listener(mainWindow):
-    if globals.LISTENER != None:
-        globals.LISTENER.stop()
-    globals.LISTENER = SmartHotkeyListener(get_hotkeys(mainWindow))
+    global listener
+    listener = SmartHotkeyListener(get_hotkeys(mainWindow))

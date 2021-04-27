@@ -3,7 +3,8 @@ from tkinter import messagebox
 import globals
 from functions import list_save_names, create_save, delete_save, load_save, export_setings
 from exceptions import SaveNotFoundError
-from hotkeys import start_hotkey_listener
+from hotkeys import start_hotkey_listener, stop_hotkey_listener
+from hotkey_setter import get_new_hotkey, hotkey_to_string
 
 #puts window infront of every other window
 def raise_above_all(window):
@@ -111,8 +112,7 @@ class MainWindow(tk.Frame):
         LoadWindow(self)
 
     def on_close(self):
-        if globals.LISTENER != None:
-            globals.LISTENER.stop()
+        stop_hotkey_listener()
         self.root.destroy()
 
 class SettingsWindow(tk.Toplevel):
@@ -133,16 +133,16 @@ class SettingsWindow(tk.Toplevel):
         self.saveDirButtonText = tk.Text(self, height=1, width=30)
         self.saveDirButton = tk.Button(self, text='Set', command=self.set_btd6_save_dir_button)
         self.saveHotkeyLabel = tk.Label(self, text='save hotkey')
-        self.saveHotkeyText = tk.Text(self, height=1, width=30)
+        self.saveHotkey = tk.Label(self, text=hotkey_to_string(globals.SAVE_HOTKEY))
         self.saveHotkeyButton = tk.Button(self, text='Set', command=self.set_save_hotkey_button)
         self.loadHotkeyLabel = tk.Label(self, text='load hotkey')
-        self.loadHotkeyText = tk.Text(self, height=1, width=30)
+        self.loadHotkey = tk.Label(self, text=hotkey_to_string(globals.LOAD_HOTKEY))
         self.loadHotkeyButton = tk.Button(self, text='Set', command=self.set_load_hotkey_button)
         self.quicksaveHotkeyLabel = tk.Label(self, text='quicksave hotkey')
-        self.quicksaveHotkeyText = tk.Text(self, height=1, width=30)
+        self.quicksaveHotkey = tk.Label(self, text=hotkey_to_string(globals.QUICKSAVE_HOTKEY))
         self.quicksaveHotkeyButton = tk.Button(self, text='Set', command=self.set_quicksave_hotkey_button)
         self.quickloadHotkeyLabel = tk.Label(self, text='quickload hotkey')
-        self.quickloadHotkeyText = tk.Text(self, height=1, width=30)
+        self.quickloadHotkey = tk.Label(self, text=hotkey_to_string(globals.QUICKLOAD_HOTKEY))
         self.quickloadHotkeyButton = tk.Button(self, text='Set', command=self.set_quickload_hotkey_button)
 
     def place_elements(self):
@@ -153,16 +153,16 @@ class SettingsWindow(tk.Toplevel):
         self.saveDirButtonText.grid(row=1, column=1)
         self.saveDirButton.grid(row=1, column=2)
         self.saveHotkeyLabel.grid(row=2, column=0)
-        self.saveHotkeyText.grid(row=2, column=1)
+        self.saveHotkey.grid(row=2, column=1)
         self.saveHotkeyButton.grid(row=2, column=2)
         self.loadHotkeyLabel.grid(row=3, column=0)
-        self.loadHotkeyText.grid(row=3, column=1)
+        self.loadHotkey.grid(row=3, column=1)
         self.loadHotkeyButton.grid(row=3, column=2)
         self.quicksaveHotkeyLabel.grid(row=4, column=0)
-        self.quicksaveHotkeyText.grid(row=4, column=1)
+        self.quicksaveHotkey.grid(row=4, column=1)
         self.quicksaveHotkeyButton.grid(row=4, column=2)
         self.quickloadHotkeyLabel.grid(row=5, column=0)
-        self.quickloadHotkeyText.grid(row=5, column=1)
+        self.quickloadHotkey.grid(row=5, column=1)
         self.quickloadHotkeyButton.grid(row=5, column=2)
 
     def set_btd6_exe_button(self):
@@ -182,32 +182,32 @@ class SettingsWindow(tk.Toplevel):
         export_setings()
 
     def set_save_hotkey_button(self):
-        textInput = self.saveHotkeyText.get('1.0', 'end-1c')
-        self.saveHotkeyText.delete('1.0', 'end-1c')
-        globals.SAVE_HOTKEY = textInput
-        start_hotkey_listener(self.mainWindow)
+        stop_hotkey_listener()
+        globals.SAVE_HOTKEY = get_new_hotkey()
+        self.saveHotkey.config(text=hotkey_to_string(globals.SAVE_HOTKEY))
         export_setings()
+        start_hotkey_listener(self.mainWindow)
 
     def set_load_hotkey_button(self):
-        textInput = self.loadHotkeyText.get('1.0', 'end-1c')
-        self.loadHotkeyText.delete('1.0', 'end-1c')
-        globals.LOAD_HOTKEY = textInput
-        start_hotkey_listener(self.mainWindow)
+        stop_hotkey_listener()
+        globals.LOAD_HOTKEY = get_new_hotkey()
+        self.loadHotkey.config(text=hotkey_to_string(globals.LOAD_HOTKEY))
         export_setings()
+        start_hotkey_listener(self.mainWindow)
 
     def set_quicksave_hotkey_button(self):
-        textInput = self.quicksaveHotkeyText.get('1.0', 'end-1c')
-        self.quicksaveHotkeyText.delete('1.0', 'end-1c')
-        globals.QUICKSAVE_HOTKEY = textInput
-        start_hotkey_listener(self.mainWindow)
+        stop_hotkey_listener()
+        globals.QUICKSAVE_HOTKEY = get_new_hotkey()
+        self.quicksaveHotkey.config(text=hotkey_to_string(globals.QUICKSAVE_HOTKEY))
         export_setings()
+        start_hotkey_listener(self.mainWindow)
 
     def set_quickload_hotkey_button(self):
-        textInput = self.quickloadHotkeyText.get('1.0', 'end-1c')
-        self.quickloadHotkeyText.delete('1.0', 'end-1c')
-        globals.QUICKLOAD_HOTKEY = textInput
-        start_hotkey_listener(self.mainWindow)
+        stop_hotkey_listener()
+        globals.QUICKLOAD_HOTKEY = get_new_hotkey()
+        self.quickloadHotkey.config(text=hotkey_to_string(globals.QUICKLOAD_HOTKEY))
         export_setings()
+        start_hotkey_listener(self.mainWindow)
 
 class SaveWindow(tk.Toplevel):
     def __init__(self, mainWindow):
