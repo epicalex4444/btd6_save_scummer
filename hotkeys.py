@@ -28,7 +28,7 @@ def get_vk(key):
 class SmartHotkeyListener(pynput.keyboard.Listener):
     def __init__(self, hotkeys:dict):
         super().__init__(on_press=self.on_press, on_release=self.on_release)
-        self.hotkeys = [pynput.keyboard.HotKey.parse(hotkey) for hotkey in hotkeys]
+        self.hotkeys = [hotkey for hotkey in hotkeys]
         self.functions = [hotkeys[hotkey] for hotkey in hotkeys]
         self.currentKeys = set()
         self.executeThread = None
