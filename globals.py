@@ -23,7 +23,7 @@ def init():
     if settings != None:
         BTD6_SAVE_DIR = settings.get('BTD6_SAVE_DIR', None)
         BTD6_EXE = settings.get('BTD6_EXE', None)
-        SAVE_HOTKEY = settings.get('SAVE_HOTKEY', ())
-        LOAD_HOTKEY = settings.get('LOAD_HOTKEY', ())
-        QUICKSAVE_HOTKEY = settings.get('QUICKSAVE_HOTKEY', ())
-        QUICKLOAD_HOTKEY = settings.get('QUICKLOAD_HOTKEY', ())
+        SAVE_HOTKEY = tuple(settings.get('SAVE_HOTKEY', []))
+        LOAD_HOTKEY = tuple(settings.get('LOAD_HOTKEY', []))
+        QUICKSAVE_HOTKEY = tuple(settings.get('QUICKSAVE_HOTKEY', []))
+        QUICKLOAD_HOTKEY = tuple(settings.get('QUICKLOAD_HOTKEY', []))
