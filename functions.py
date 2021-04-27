@@ -70,7 +70,7 @@ def create_save(saveName:str):
     shutil.move(src, dst)
 
 def delete_save(saveName:str):
-    check_save_folder()
+    check_local_save_folder()
     if not os.path.isfile(globals.LOCAL_SAVE_DIR + saveName + '.Save'):
         raise SaveNotFoundError
     os.remove(globals.LOCAL_SAVE_DIR + saveName + '.Save')
@@ -115,11 +115,7 @@ def check_local_save_folder():
         os.mkdir(globals.LOCAL_SAVE_DIR)
 
 def btd6_exe_valid():
-    if not os.path.isfile(globals.BTD6_EXE):
-        return False
-    if not globals.BTD6_EXE.endswith('\\BloonsTD6.exe'):
-        return False
+    return os.path.isfile(globals.BTD6_EXE) and globals.BTD6_EXE.endswith('\\BloonsTD6.exe')
 
 def btd6_save_dir_valid():
-    if not os.path.isfile(globals.BTD6_SAVE_DIR + 'Profile.Save'):
-        return False
+    return os.path.isfile(globals.BTD6_SAVE_DIR + 'Profile.Save')
