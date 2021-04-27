@@ -42,7 +42,7 @@ class SmartHotkeyListener(pynput.keyboard.Listener):
             if self.hotkey_active(hotkey):
                 if not self.lock.locked():
                     self.close_thread() #if the lock has been released we know the thread is ready to exit
-                    self.executeThread = threading.Thread(target=self.functions[i])
+                    self.executeThread = threading.Thread(target=self.execute_function(self.functions[i]))
                     self.executeThread.start()
                 return
 
@@ -57,7 +57,7 @@ class SmartHotkeyListener(pynput.keyboard.Listener):
         return hotkeyActive
 
     def execute_function(self, function):
-        self.lock.aquire()
+        self.lock.acquire()
         function()
         self.lock.release()
 
