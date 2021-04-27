@@ -2,8 +2,20 @@ import pynput
 import globals
 from functions import create_save, load_save
 import threading
+from exceptions import InvalidHotkeys
 
 listener = None
+
+def check_hotkeys_valid():
+    hotkeys = (globals.SAVE_HOTKEY, globals.LOAD_HOTKEY, globals.QUICKSAVE_HOTKEY, globals.QUICKSAVE_HOTKEY)
+    for hotkey in hotkeys:
+        for key in hotkey:
+            if not isinstance(key, int) or (key < 1 or key > 254):
+                globals.SAVE_HOTKEY = ()
+                globals.LOAD_HOTKEY = ()
+                globals.QUICKSAVE_HOTKEY = ()
+                globals.QUICKSAVE_HOTKEY = ()
+                raise InvalidHotkeys
 
 def any_hotkeys_set():
     return not (globals.SAVE_HOTKEY == () and globals.LOAD_HOTKEY == () and globals.QUICKSAVE_HOTKEY == () and globals.QUICKLOAD_HOTKEY == ())

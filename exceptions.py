@@ -17,4 +17,7 @@ class IncorrectBtd6ExeDir(Exception):
 class IncorrectBtd6SaveDir(Exception):
     def __init__(self, message='BTD6 Save Directory is incorrect'):
         super().__init__(message)
- 
+
+class InvalidHotkeys(Exception):
+    def __init__(self, message='Hotkeys are Invalid Try Setting Them Again in Settings'):
+        super().__init__(message)
