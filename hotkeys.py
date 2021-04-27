@@ -48,7 +48,7 @@ class SmartHotkeyListener(pynput.keyboard.Listener):
     def on_release(self, key):
         key = self.canonical(key)
         if key in self.currentKeys:
-            self.currentKeys.remove()
+            self.currentKeys.remove(key)
 
     def hotkey_active(self, hotkey):
         hotkeyActive = True
