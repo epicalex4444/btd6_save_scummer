@@ -20,13 +20,11 @@ To make a save you write the saves name into the text box in the main window the
 
 You can also set hotkeys in settings to quickly perform save/load these hotkeys will bring up a small menu just for these task. You can also set quicksave and quickload hotkeys which store one save at a time, this save will get overwriten by the next quicksave and is only accessible by the quickload hotkey.
 ## How It Works
-This program works the same way as one device save scumming has been done for ages, it just does it all automatically for you.
+When you make a save it creates a folder with that name in the saves folder, in the folder it copies Profile.Save and Profile.bak from btd6.
 
-When you make a save the program copies the Profile.Save file which is in the btd6 save directory that you set to the local save folder which in the same directory as the save_scummer.py file. Then the Profile.Save file in the saves folder is renamed to the name you set keeping the .Save extension.
+When you load a save it closes btd6, copies the Profile.Save and Profile.bak from it's save folder back to btd6 overwritting the current ones there, then opens btd6 again.
 
-When you load a save it closes the game, copies the save you choose in the btd6 save directory you set then it renames it to Profile.Save replacing the current one in the directory, then reopens the game.
-
-When you delete a save it just removes the save from the local save folder
+When you delete a save it removes the folder and contents from the save folder.
 ## Future Development
 Nothing is set in stone but these are ideas I have to improve the program.    
 Either intergrate this into btd6 as a mod or turn it into an exe and so it can be ran just by clicking it.  
