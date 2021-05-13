@@ -21,3 +21,7 @@ class IncorrectBtd6SaveDir(Exception):
 class InvalidHotkeys(Exception):
     def __init__(self, message='Hotkeys are Invalid Try Setting Them Again in Settings'):
         super().__init__(message)
+
+class SaveMissingData(Exception):
+    def __init__(self, message='the save you are loading is missing data, it is missing either Profile.Save or Profile.bak file'):
+        super().__init__(message)

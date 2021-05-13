@@ -8,12 +8,11 @@ from exceptions import *
 
 def list_save_names():
     check_local_save_folder()
-    saveNames = []
-    files = os.listdir(globals.LOCAL_SAVE_DIR)
-    for fileName in files:
-        if fileName.endswith('.Save') and fileName != 'quicksave.Save':
-            saveNames.append(fileName[:-5])
-    return saveNames
+    saves = []
+    for folder in os.scandir(globals.LOCAL_SAVE_DIR):
+        if (folder.is_dir() and folder.name != 'quicksave'):
+            saves.append(folder.name)
+    return saves
 
 def close_btd6():
     for process in psutil.process_iter():
@@ -55,44 +54,47 @@ def export_setings():
 def create_save(saveName:str):
     if not btd6_save_dir_valid():
         raise IncorrectBtd6SaveDir
+    
     check_local_save_folder()
+
     if globals.BTD6_SAVE_DIR == None:
         raise InvalidSettingsError
-    if os.path.isfile(globals.LOCAL_SAVE_DIR + saveName + '.Save') and saveName != 'quicksave':
-        raise SaveExistsError
-    
-    src = globals.BTD6_SAVE_DIR + 'Profile.Save'
-    dst = globals.LOCAL_SAVE_DIR
-    shutil.copy(src, dst)
 
-    src = globals.LOCAL_SAVE_DIR + 'Profile.Save'
-    dst = globals.LOCAL_SAVE_DIR + saveName + '.Save'
-    shutil.move(src, dst)
+    localSaveDir = globals.LOCAL_SAVE_DIR + saveName + '//'
+    if os.path.isdir(localSaveDir) and saveName != 'quicksave':
+        raise SaveExistsError
+
+    os.mkdir(localSaveDir)
+
+    shutil.copy(globals.BTD6_SAVE_DIR + 'Profile.Save', localSaveDir)
+    shutil.copy(globals.BTD6_SAVE_DIR + 'Profile.bak', localSaveDir)
 
 def delete_save(saveName:str):
     check_local_save_folder()
-    if not os.path.isfile(globals.LOCAL_SAVE_DIR + saveName + '.Save'):
+    if not os.path.isdir(globals.LOCAL_SAVE_DIR + saveName):
         raise SaveNotFoundError
-    os.remove(globals.LOCAL_SAVE_DIR + saveName + '.Save')
+    shutil.rmtree(globals.LOCAL_SAVE_DIR + saveName)
 
 def load_save(saveName:str):
     if not btd6_save_dir_valid():
         raise IncorrectBtd6SaveDir
+    
     check_local_save_folder()
+
+    if not save_valid(saveName):
+        raise SaveMissingData
+
     if globals.BTD6_SAVE_DIR == None or globals.BTD6_EXE == None:
         raise InvalidSettingsError
-    if not os.path.isfile(globals.LOCAL_SAVE_DIR + saveName + '.Save'):
+
+    localSaveDir = globals.LOCAL_SAVE_DIR + saveName + '\\'
+    if not os.path.isdir(localSaveDir):
         raise SaveNotFoundError
 
     close_btd6()
 
-    src = globals.LOCAL_SAVE_DIR + saveName + '.Save'
-    dst = globals.BTD6_SAVE_DIR
-    shutil.copy(src, dst)
-
-    src = globals.BTD6_SAVE_DIR + saveName + '.Save'
-    dst = globals.BTD6_SAVE_DIR + 'Profile.Save'
-    shutil.move(src, dst)
+    shutil.copy(localSaveDir + 'Profile.Save', globals.BTD6_SAVE_DIR)
+    shutil.copy(localSaveDir + 'Profile.bak', globals.BTD6_SAVE_DIR)
 
     open_btd6()
 
@@ -123,5 +125,14 @@ def btd6_exe_valid():
 def btd6_save_dir_valid():
     try:
         return os.path.isfile(globals.BTD6_SAVE_DIR + 'Profile.Save')
+    except:
+        return False
+
+def save_valid(saveName:str):
+    localSaveDir = globals.LOCAL_SAVE_DIR + saveName + '\\'
+    try:
+        save = os.path.isfile(localSaveDir + 'Profile.Save')
+        bak = os.path.isfile(localSaveDir + 'Profile.bak')
+        return save and bak
     except:
         return False
