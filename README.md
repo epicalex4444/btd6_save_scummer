@@ -8,7 +8,7 @@ You can get hacker pooled loading saves from different btd6 accounts.
 2. Extract the downloaded file and move it to a desired location
 3. If you don't have python installed already you are go to https://www.python.org/downloads/ and download python, make sure to add python to path when installing
 4. Open up powershell and navigate to the directory of save_scummer.py using cd and ls commands. navigating in powershell guide: https://forsenergy.com/en-us/windowspowershellhelp/html/a0fab50f-77d4-42b6-b6ae-8f9d46daaa7a.htm
-5. You will most likely need to install the python module psutil but you may need to install others as well, installing python modules can be done with the command pip install moduleName, when you try to run save_scummer.py(next step) it will tell you which modules you need to install if any
+5. You will most likely need to install the python modules psutil and pynput but you may need to install others as well, installing python modules can be done with the command "py -3 -m pip install moduleName", when you try to run save_scummer.py(next step) it will tell you which modules you need to install if any
 6. To run the file then enter py -3 save_scummer.py
 7. You can also run save_scummer.py in any other way you want, running it through powershell is just an easy an accessible way to do it
 ## How To Use
