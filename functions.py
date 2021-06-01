@@ -60,11 +60,11 @@ def create_save(saveName:str):
     if globals.BTD6_SAVE_DIR == None:
         raise InvalidSettingsError
 
-    localSaveDir = globals.LOCAL_SAVE_DIR + saveName + '//'
-    if os.path.isdir(localSaveDir) and saveName != 'quicksave':
+    localSaveDir = globals.LOCAL_SAVE_DIR + saveName + '\\'
+    if not os.path.isdir(localSaveDir):
+        os.mkdir(localSaveDir)
+    elif saveName != 'quicksave':
         raise SaveExistsError
-
-    os.mkdir(localSaveDir)
 
     shutil.copy(globals.BTD6_SAVE_DIR + 'Profile.Save', localSaveDir)
     shutil.copy(globals.BTD6_SAVE_DIR + 'Profile.bak', localSaveDir)
