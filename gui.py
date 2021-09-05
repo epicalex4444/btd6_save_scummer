@@ -102,11 +102,12 @@ class MainWindow(tk.Frame):
             self.remove_save(saveName)
             raise SaveNotFoundError
         finally:
-            create_save('backup')
-            for save in self.saves:
-                if save.name == 'backup':
-                    return
-            self.add_save('backup')
+            if saveName != 'backup':
+                create_save('backup')
+                for save in self.saves:
+                    if save.name == 'backup':
+                        return
+                self.add_save('backup')
 
     def settings_button(self):
         SettingsWindow(self)
@@ -261,10 +262,11 @@ class LoadWindow(tk.Toplevel):
             self.mainWindow.remove_save(saveName)
             raise SaveNotFoundError
         finally:
-            create_save('backup')
-            for save in self.mainWindow.saves:
-                if save.name == 'backup':
-                    self.destroy()
-                    return
-            self.mainWindow.add_save('backup')
+            if saveName != 'backup':
+                create_save('backup')
+                for save in self.mainWindow.saves:
+                    if save.name == 'backup':
+                        self.destroy()
+                        return
+                self.mainWindow.add_save('backup')
             self.destroy()
