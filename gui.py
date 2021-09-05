@@ -87,6 +87,8 @@ class MainWindow(tk.Frame):
         self.inputText.delete('1.0', 'end-1c')
         create_save(saveName)
         self.add_save(saveName)
+        add create_save('backup')
+        self.add_save('backup')
 
     def delete_save_button(self, saveName:str):
         answer = messagebox.askyesno('Delete Save Conformation', 'Are you sure you want to delete {0}?'.format(saveName))
@@ -234,6 +236,8 @@ class SaveWindow(tk.Toplevel):
         saveName = self.inputText.get('1.0', 'end-1c')
         create_save(saveName)
         self.mainWindow.add_save(saveName)
+        create_save('backup')
+        self.mainWindow.add_save('backup')
         self.destroy()
 
 class LoadWindow(tk.Toplevel):
