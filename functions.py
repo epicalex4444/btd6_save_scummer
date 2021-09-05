@@ -91,6 +91,15 @@ def load_save(saveName:str):
     if not os.path.isdir(localSaveDir):
         raise SaveNotFoundError
 
+    # create a directory inside globals.LOCAL_SAVE_DIR
+    backup_save = globals.LOCAL_SAVE_DIR + 'backup\\'
+    if not os.is_dir(backup_save): 
+        os.mkdir(backup_save)
+
+    # in case people are dumb
+    shutil.copy(globals.BTD6_SAVE_DIR + 'Profile.Save', backup_save)
+    shutil.copy(globals.BTD6_SAVE_DIR + 'Profile.bak', backup_save)
+
     close_btd6()
 
     shutil.copy(localSaveDir + 'Profile.Save', globals.BTD6_SAVE_DIR)
