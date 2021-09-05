@@ -63,7 +63,7 @@ def create_save(saveName:str):
     localSaveDir = globals.LOCAL_SAVE_DIR + saveName + '\\'
     if not os.path.isdir(localSaveDir):
         os.mkdir(localSaveDir)
-    elif saveName != 'quicksave':
+    elif not (saveName == 'quicksave' or saveName == 'backup'):
         raise SaveExistsError
 
     shutil.copy(globals.BTD6_SAVE_DIR + 'Profile.Save', localSaveDir)
@@ -90,15 +90,6 @@ def load_save(saveName:str):
     localSaveDir = globals.LOCAL_SAVE_DIR + saveName + '\\'
     if not os.path.isdir(localSaveDir):
         raise SaveNotFoundError
-
-    # create a directory inside globals.LOCAL_SAVE_DIR
-    backup_save = globals.LOCAL_SAVE_DIR + 'backup\\'
-    if not os.is_dir(backup_save): 
-        os.mkdir(backup_save)
-
-    # in case people are dumb
-    shutil.copy(globals.BTD6_SAVE_DIR + 'Profile.Save', backup_save)
-    shutil.copy(globals.BTD6_SAVE_DIR + 'Profile.bak', backup_save)
 
     close_btd6()
 

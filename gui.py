@@ -87,8 +87,6 @@ class MainWindow(tk.Frame):
         self.inputText.delete('1.0', 'end-1c')
         create_save(saveName)
         self.add_save(saveName)
-        add create_save('backup')
-        self.add_save('backup')
 
     def delete_save_button(self, saveName:str):
         answer = messagebox.askyesno('Delete Save Conformation', 'Are you sure you want to delete {0}?'.format(saveName))
@@ -103,6 +101,12 @@ class MainWindow(tk.Frame):
         except SaveNotFoundError:
             self.remove_save(saveName)
             raise SaveNotFoundError
+        finally:
+            create_save('backup')
+            for save in self.saves:
+                if save.name == 'backup':
+                    return
+            self.add_save('backup')
 
     def settings_button(self):
         SettingsWindow(self)
@@ -236,8 +240,6 @@ class SaveWindow(tk.Toplevel):
         saveName = self.inputText.get('1.0', 'end-1c')
         create_save(saveName)
         self.mainWindow.add_save(saveName)
-        create_save('backup')
-        self.mainWindow.add_save('backup')
         self.destroy()
 
 class LoadWindow(tk.Toplevel):
@@ -259,4 +261,10 @@ class LoadWindow(tk.Toplevel):
             self.mainWindow.remove_save(saveName)
             raise SaveNotFoundError
         finally:
+            create_save('backup')
+            for save in self.mainWindow.saves:
+                if save.name == 'backup':
+                    self.destroy()
+                    return
+            self.mainWindow.add_save('backup')
             self.destroy()

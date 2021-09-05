@@ -20,6 +20,14 @@ def check_hotkeys_valid():
 def any_hotkeys_set():
     return not (globals.SAVE_HOTKEY == () and globals.LOAD_HOTKEY == () and globals.QUICKSAVE_HOTKEY == () and globals.QUICKLOAD_HOTKEY == ())
 
+def quick_load(mainWindow):
+    load_save('quicksave')
+    create_save('backup')
+    for save in mainWindow.saves:
+        if save.name == 'backup':
+            return
+    mainWindow.add_save('backup')
+
 def get_hotkeys(mainWindow):
     hotkeys = dict()
     if globals.SAVE_HOTKEY != ():
@@ -29,7 +37,7 @@ def get_hotkeys(mainWindow):
     if globals.QUICKSAVE_HOTKEY != ():
         hotkeys[globals.QUICKSAVE_HOTKEY] = lambda: create_save('quicksave')
     if globals.QUICKLOAD_HOTKEY != ():
-        hotkeys[globals.QUICKLOAD_HOTKEY] = lambda: load_save('quicksave')
+        hotkeys[globals.QUICKLOAD_HOTKEY] = lambda: quick_load(mainWindow)
     return hotkeys
 
 def get_vk(key):
